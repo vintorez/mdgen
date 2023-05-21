@@ -1,7 +1,6 @@
 package md
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -51,18 +50,30 @@ func Code(s string) string {
 	return "`" + s + "`"
 }
 
-func CodeBlock(s string) string {
+func CodeBlock(s string, lang ...string) string {
 	if s == "" {
 		return ""
+	}
+	if len(lang) > 0 {
+		return "```" + lang[0] + "\n" + s + "\n```"
 	}
 	return "```\n" + s + "\n```"
 }
 
-func Link(text, url string) string {
-	if text == "" || url == "" {
+func Link(url string, text ...string) string {
+	if url == "" {
 		return ""
 	}
-	return fmt.Sprintf("[%s](%s)", text, url)
+
+	txt := ""
+	if len(text) > 0 {
+		txt = text[0]
+	}
+	if txt == "" {
+		txt = url
+	}
+
+	return "[" + txt + "](" + url + ")"
 }
 
 func Anchor(s string) string {

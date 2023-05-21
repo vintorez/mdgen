@@ -46,8 +46,8 @@ func (b *Builder) Paragraph(s string) *Builder {
 	return b.write(s)
 }
 
-func (b *Builder) Ln() *Builder {
-	return b.ln()
+func (b *Builder) Ln(count ...int) *Builder {
+	return b.ln(count...)
 }
 
 func (b *Builder) CodeBlock(s string) *Builder {
@@ -70,7 +70,11 @@ func (b *Builder) write(s string) *Builder {
 	return b.ln()
 }
 
-func (b *Builder) ln() *Builder {
-	b.buff.WriteString("\n")
+func (b *Builder) ln(count ...int) *Builder {
+	n := "\n"
+	if len(count) > 0 {
+		n = strings.Repeat(n, count[0])
+	}
+	b.buff.WriteString(n)
 	return b
 }

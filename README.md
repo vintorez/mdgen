@@ -25,7 +25,7 @@ func main() {
 
 	b.H2("Secondary title")
 	for _, number := range numbers {
-		b.ListItem(md.Link(md.Code(number), md.Anchor(number)))
+		b.ListItem(md.Link(md.Anchor(number), md.Code(number)))
 	}
 	b.Ln()
 
