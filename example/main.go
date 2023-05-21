@@ -1,12 +1,3 @@
-# mdgen
-
-mdgen is a Markdown generator for the [Go programming language][golang].
-
-[golang]: http://golang.org/
-
-See it in action:
-
-```go
 package main
 
 import (
@@ -37,30 +28,3 @@ func main() {
 
 	fmt.Println(b.String())
 }
-
-```
-
-It generates the following Markdown code:
-```markdown
-# Primary title
-
-Some **bold** text.
-
-## Secondary title
-
-* [`one`](#one)
-* [`two`](#two)
-* [`three`](#three)
-
-### one
-
-Description.
-
-### two
-
-Description.
-
-### three
-
-Description.
-```
