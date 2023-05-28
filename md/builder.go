@@ -4,13 +4,19 @@ import (
 	"strings"
 )
 
+const (
+	defaultIndent = 4
+)
+
 type Builder struct {
-	buff *strings.Builder
+	indents []int
+	buff    *strings.Builder
 }
 
 func NewBuilder() *Builder {
 	return &Builder{
-		buff: new(strings.Builder),
+		indents: make([]int, 0, 1),
+		buff:    new(strings.Builder),
 	}
 }
 
@@ -54,8 +60,66 @@ func (b *Builder) CodeBlock(s string) *Builder {
 	return b.write(CodeBlock(s))
 }
 
-func (b *Builder) ListItem(s string) *Builder {
-	return b.write(UnorderedListItem(s))
+type ListItemFn func(s string) string
+
+func (b *Builder) UnorderedList(list []string, fns ...ListItemFn) *Builder {
+	return b.list(Unordered, list, fns...)
+}
+
+func (b *Builder) UnorderedListItem(s string) *Builder {
+	return b.listItem(Unordered, s)
+}
+
+func (b *Builder) OrderedList(list []string, fns ...ListItemFn) *Builder {
+	return b.list(Ordered, list, fns...)
+}
+
+func (b *Builder) OrderedListItem(s string) *Builder {
+	return b.listItem(Ordered, s)
+}
+
+func (b *Builder) Indent(counts ...int) *Builder {
+	count := 0
+	if len(counts) > 0 {
+		count = counts[0]
+	} else {
+		count = defaultIndent
+	}
+	if count <= 0 {
+		return b
+	}
+	if len(b.indents) > 0 {
+		count += b.indents[len(b.indents)-1]
+	}
+	b.indents = append(b.indents, count)
+	return b
+}
+
+func (b *Builder) NoIndent() *Builder {
+	if len(b.indents) > 0 {
+		b.indents = b.indents[:len(b.indents)-1]
+	}
+	return b
+}
+
+func (b *Builder) list(t ListType, list []string, fns ...ListItemFn) *Builder {
+	var fn ListItemFn
+	if len(fns) > 0 {
+		fn = fns[0]
+	}
+
+	b.buff.Grow(len(list))
+	for _, item := range list {
+		if fn != nil {
+			item = fn(item)
+		}
+		b.listItem(t, item)
+	}
+	return b
+}
+
+func (b *Builder) listItem(t ListType, s string) *Builder {
+	return b.write(ListItem(t, s))
 }
 
 func (b *Builder) heading(level HeadingLevel, s string) *Builder {
@@ -66,7 +130,11 @@ func (b *Builder) write(s string) *Builder {
 	if s == "" {
 		return b
 	}
-	b.buff.WriteString(s)
+	var indent string
+	if len(b.indents) > 0 {
+		indent = strings.Repeat(" ", b.indents[len(b.indents)-1])
+	}
+	b.buff.WriteString(indent + s)
 	return b.ln()
 }
 

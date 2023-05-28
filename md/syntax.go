@@ -15,6 +15,13 @@ const (
 	L6
 )
 
+type ListType int
+
+const (
+	Unordered = iota
+	Ordered
+)
+
 func Heading(level HeadingLevel, s string) string {
 	if s == "" {
 		return ""
@@ -36,11 +43,18 @@ func Italic(s string) string {
 	return "*" + s + "*"
 }
 
-func UnorderedListItem(s string) string {
+func ListItem(t ListType, s string) string {
 	if s == "" {
 		return ""
 	}
-	return "* " + s
+	switch t {
+	case Unordered:
+		return "- " + s
+	case Ordered:
+		return "1. " + s
+	default:
+		return ""
+	}
 }
 
 func Code(s string) string {
