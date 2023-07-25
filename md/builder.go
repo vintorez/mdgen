@@ -78,6 +78,13 @@ func (b *Builder) OrderedListItem(s string) *Builder {
 	return b.listItem(Ordered, s)
 }
 
+func (b *Builder) WithIndent(fn func(b *Builder)) *Builder {
+	b.Indent()
+	fn(b)
+	b.NoIndent()
+	return b
+}
+
 func (b *Builder) Indent(counts ...int) *Builder {
 	count := 0
 	if len(counts) > 0 {
@@ -108,6 +115,10 @@ func (b *Builder) list(t ListType, list []string, fns ...ListItemFn) *Builder {
 		fn = fns[0]
 	}
 
+	if len(list) == 0 {
+		return b
+	}
+
 	b.buff.Grow(len(list))
 	for _, item := range list {
 		if fn != nil {
@@ -115,7 +126,7 @@ func (b *Builder) list(t ListType, list []string, fns ...ListItemFn) *Builder {
 		}
 		b.listItem(t, item)
 	}
-	return b
+	return b.ln()
 }
 
 func (b *Builder) listItem(t ListType, s string) *Builder {

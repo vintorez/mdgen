@@ -20,31 +20,40 @@ var numbers = []string{"one", "two", "three"}
 func main() {
 	b := md.NewBuilder()
 
-	b.H1("Primary title")
-	b.Paragraph("Some " + md.Bold("bold") + " text.").Ln()
+	b.H1("First title")
+	b.Paragraph("Some " + md.Bold("bold") + " and " + md.Italic("italic") + " text.").Ln()
 
-	b.H2("Secondary title")
-	// use UnorderedList instead of UnorderedListItem where it is possible
+	b.H3("An unordered list with no indent")
 	b.UnorderedList(numbers, func(s string) string {
 		return md.Link(md.Anchor(s), md.Code(s))
 	})
 
-	// the same as above
-	b.Indent()
+	// add default indent
+	b.WithIndent(func(b *md.Builder) {
+		b.H3("An unordered list with a single indent")
+		b.UnorderedList(numbers, func(s string) string {
+			return md.Link(md.Anchor(s), md.Code(s))
+		})
+
+		b.WithIndent(func(b *md.Builder) {
+			b.H3("An unordered list with a double indent")
+			b.UnorderedList(numbers, func(s string) string {
+				return md.Link(md.Anchor(s), md.Code(s))
+			})
+		})
+	})
+
+	// the same as WithIndent but the length of indent can be set manually
+	b.Indent(2)
+	// use UnorderedList instead of UnorderedListItem where it is possible
 	for _, number := range numbers {
 		b.UnorderedListItem(md.Link(md.Anchor(number), md.Code(number)))
 	}
 	b.NoIndent()
 	b.Ln()
 
-	b.H3("Title")
+	b.H3("Second title")
 	b.OrderedList(numbers)
-	b.Indent()
-	for _, number := range numbers {
-		b.OrderedListItem(number)
-	}
-	b.NoIndent()
-	b.Ln()
 
 	for _, number := range numbers {
 		b.H4(number)
@@ -59,27 +68,37 @@ func main() {
 
 It generates the following Markdown code:
 ```markdown
-# Primary title
+# First title
 
-Some **bold** text.
+Some **bold** and *italic* text.
 
-## Secondary title
+### An unordered list with no indent
 
 - [`one`](#one)
 - [`two`](#two)
 - [`three`](#three)
+
+    ### An unordered list with a single indent
+
     - [`one`](#one)
     - [`two`](#two)
     - [`three`](#three)
 
-### Title
+        ### An unordered list with a double indent
+
+        - [`one`](#one)
+        - [`two`](#two)
+        - [`three`](#three)
+
+  - [`one`](#one)
+  - [`two`](#two)
+  - [`three`](#three)
+
+### Second title
 
 1. one
 1. two
 1. three
-    1. one
-    1. two
-    1. three
 
 #### one
 

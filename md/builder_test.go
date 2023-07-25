@@ -482,47 +482,37 @@ func TestBuilder_UnorderedList(t *testing.T) {
 			name:     "one line + no functions",
 			input:    []string{"qwerty qwerty"},
 			fns:      nil,
-			expected: "- qwerty qwerty\n",
+			expected: "- qwerty qwerty\n\n",
 		},
 		{
 			name:     "multi lines + no functions",
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
 			fns:      nil,
-			expected: "- qwerty qwerty\n- qwerty qwerty\n- qwerty qwerty\n",
+			expected: "- qwerty qwerty\n- qwerty qwerty\n- qwerty qwerty\n\n",
 		},
 		{
-			name:  "empty input + bold function",
-			input: nil,
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
+			name:     "empty input + bold function",
+			input:    nil,
+			fns:      []ListItemFn{Bold},
 			expected: "",
 		},
 		{
-			name:  "one line + bold function",
-			input: []string{"qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "- **qwerty qwerty**\n",
+			name:     "one line + bold function",
+			input:    []string{"qwerty qwerty"},
+			fns:      []ListItemFn{Bold},
+			expected: "- **qwerty qwerty**\n\n",
 		},
 		{
-			name:  "multi lines + bold function",
-			input: []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n",
+			name:     "multi lines + bold function",
+			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
+			fns:      []ListItemFn{Bold},
+			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n\n",
 		},
 		{
-			name:  "multi lines + multi functions",
-			input: []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}, func(s string) string {
-				return Italic(s)
-			}},
-			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n",
+			name:     "multi lines + multi functions",
+			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
+			fns:      []ListItemFn{Bold, Italic},
+			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n\n",
 		},
 	}
 	for _, tt := range tests {
@@ -587,47 +577,37 @@ func TestBuilder_OrderedList(t *testing.T) {
 			name:     "one line + no functions",
 			input:    []string{"qwerty qwerty"},
 			fns:      nil,
-			expected: "1. qwerty qwerty\n",
+			expected: "1. qwerty qwerty\n\n",
 		},
 		{
 			name:     "multi lines + no functions",
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
 			fns:      nil,
-			expected: "1. qwerty qwerty\n1. qwerty qwerty\n1. qwerty qwerty\n",
+			expected: "1. qwerty qwerty\n1. qwerty qwerty\n1. qwerty qwerty\n\n",
 		},
 		{
-			name:  "empty input + bold function",
-			input: nil,
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
+			name:     "empty input + bold function",
+			input:    nil,
+			fns:      []ListItemFn{Bold},
 			expected: "",
 		},
 		{
-			name:  "one line + bold function",
-			input: []string{"qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "1. **qwerty qwerty**\n",
+			name:     "one line + bold function",
+			input:    []string{"qwerty qwerty"},
+			fns:      []ListItemFn{Bold},
+			expected: "1. **qwerty qwerty**\n\n",
 		},
 		{
-			name:  "multi lines + bold function",
-			input: []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n",
+			name:     "multi lines + bold function",
+			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
+			fns:      []ListItemFn{Bold},
+			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n\n",
 		},
 		{
-			name:  "multi lines + multi functions",
-			input: []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}, func(s string) string {
-				return Italic(s)
-			}},
-			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n",
+			name:     "multi lines + multi functions",
+			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
+			fns:      []ListItemFn{Bold, Italic},
+			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n\n",
 		},
 	}
 	for _, tt := range tests {
@@ -951,52 +931,42 @@ func TestBuilder_list(t *testing.T) {
 			listType: Unordered,
 			input:    []string{"qwerty qwerty"},
 			fns:      nil,
-			expected: "- qwerty qwerty\n",
+			expected: "- qwerty qwerty\n\n",
 		},
 		{
 			name:     "multi lines + no functions",
 			listType: Unordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
 			fns:      nil,
-			expected: "- qwerty qwerty\n- qwerty qwerty\n- qwerty qwerty\n",
+			expected: "- qwerty qwerty\n- qwerty qwerty\n- qwerty qwerty\n\n",
 		},
 		{
 			name:     "empty input + bold function",
 			listType: Unordered,
 			input:    nil,
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
+			fns:      []ListItemFn{Bold},
 			expected: "",
 		},
 		{
 			name:     "one line + bold function",
 			listType: Unordered,
 			input:    []string{"qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "- **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold},
+			expected: "- **qwerty qwerty**\n\n",
 		},
 		{
 			name:     "multi lines + bold function",
 			listType: Unordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold},
+			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n\n",
 		},
 		{
 			name:     "multi lines + multi functions",
 			listType: Unordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}, func(s string) string {
-				return Italic(s)
-			}},
-			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold, Italic},
+			expected: "- **qwerty qwerty**\n- **qwerty qwerty**\n- **qwerty qwerty**\n\n",
 		},
 		{
 			name:     "empty input + no functions",
@@ -1010,52 +980,42 @@ func TestBuilder_list(t *testing.T) {
 			listType: Ordered,
 			input:    []string{"qwerty qwerty"},
 			fns:      nil,
-			expected: "1. qwerty qwerty\n",
+			expected: "1. qwerty qwerty\n\n",
 		},
 		{
 			name:     "multi lines + no functions",
 			listType: Ordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
 			fns:      nil,
-			expected: "1. qwerty qwerty\n1. qwerty qwerty\n1. qwerty qwerty\n",
+			expected: "1. qwerty qwerty\n1. qwerty qwerty\n1. qwerty qwerty\n\n",
 		},
 		{
 			name:     "empty input + bold function",
 			listType: Ordered,
 			input:    nil,
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
+			fns:      []ListItemFn{Bold},
 			expected: "",
 		},
 		{
 			name:     "one line + bold function",
 			listType: Ordered,
 			input:    []string{"qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "1. **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold},
+			expected: "1. **qwerty qwerty**\n\n",
 		},
 		{
 			name:     "multi lines + bold function",
 			listType: Ordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}},
-			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold},
+			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n\n",
 		},
 		{
 			name:     "multi lines + multi functions",
 			listType: Ordered,
 			input:    []string{"qwerty qwerty", "qwerty qwerty", "qwerty qwerty"},
-			fns: []ListItemFn{func(s string) string {
-				return Bold(s)
-			}, func(s string) string {
-				return Italic(s)
-			}},
-			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n",
+			fns:      []ListItemFn{Bold, Italic},
+			expected: "1. **qwerty qwerty**\n1. **qwerty qwerty**\n1. **qwerty qwerty**\n\n",
 		},
 	}
 	for _, tt := range tests {
